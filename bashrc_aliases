@@ -1,0 +1,43 @@
+#---------------------------------------------------
+#--------  My custom commands & aliases ------------
+
+alias toto="echo 'toto is ready'"
+alias cook="cc -Wall -Wextra -Werror"
+alias nb="git switch -c"
+alias sb="git switch"
+alias sbm="git switch main"
+alias gcmt="git commit -m"
+alias gsts="git status"
+alias gadd="git add ."
+
+gcmtc()
+{
+	branch=$(git branch --show-current)
+	echo -e "==> Going to commit on the following branch : $branch\n"
+	git commit -m "$branch"
+}
+
+gpsh()
+{
+	branch=$(git branch --show-current)
+	echo "==> Going to push on the following branch : $branch\n"
+	git push origin "$branch"
+}
+
+gpl()
+{
+	branch=$(git branch --show-current)
+	echo "==> Going to pull on the following branch: ${branch}\n"
+	git pull origin "$branch"
+}
+
+mkcd()
+{
+	mkdir "$1" && cd "$1"
+}
+
+cookt()
+{
+	cook "$1" && ./a.out
+}
+
