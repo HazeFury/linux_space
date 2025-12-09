@@ -42,9 +42,15 @@ int	main(void)
 	2. encore du code
 	3. toujours plus de code
 
-### Les images :
+### Les liens et images :
 
 [Logo de 42](https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/42_Logo.svg/1200px-42_Logo.svg.png)
+
+<!-- ![Logo de 42](https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/42_Logo.svg/1200px-42_Logo.svg.png) -->
+
+<div align="center">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/42_Logo.svg/1200px-42_Logo.svg.png" alt="Logo 42" width="200" />
+</div>
 
 ### Les citations :
 
