@@ -21,7 +21,7 @@ Voici les dossiers vitaux à connaître (notamment pour l'examen Born2beRoot) :
 | **`/tmp`** | **Temporary** | Fichiers temporaires. Son contenu est effacé à chaque redémarrage. |
 | **`/dev`** | **Devices** | Contient les fichiers représentant le matériel (disques durs, terminaux, etc.). |
 
-> **💡 Astuce mnémotechnique :**
+> **💡 Astuce mémotechnique :**
 > * Tu veux lancer un programme ? -> `/bin`
 > * Tu veux configurer un truc ? -> `/etc`
 > * Tu veux voir pourquoi ça a planté ? -> `/var/log`
