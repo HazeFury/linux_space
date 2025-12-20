@@ -1,0 +1,18 @@
+# Log File - Server Alpha
+# Date: 2023-12-10
+
+192.168.1.10 - marco [10/Dec/2023:10:00:01] "GET /index.html" 200 5120
+192.168.1.11 - admin [10/Dec/2023:10:05:22] "GET /dashboard.php" 200 10240
+10.0.0.45 - - [10/Dec/2023:10:06:01] "GET /img/logo.png" 200 2400
+192.168.1.10 - marco [10/Dec/2023:10:07:00] "POST /upload.php" 500 0
+172.16.0.5 - guest [10/Dec/2023:10:08:55] "GET /login.html" 404 120
+
+# Warning: High latency detected at 10:09
+
+192.168.1.15 - dave [10/Dec/2023:10:10:10] "GET /robots.txt" 200 450
+192.168.1.11 - admin [10/Dec/2023:10:11:00] "DELETE /users/db.sql" 403 0
+10.0.0.45 - - [10/Dec/2023:10:12:00] "GET /style.css" 200 1500
+8.8.8.8 - hacker [10/Dec/2023:10:15:00] "GET /etc/passwd" 403 0
+192.168.1.10 - marco [10/Dec/2023:10:20:00] "GET /profile.php" 200 8500
+
+# End of log snippet
