@@ -35,6 +35,11 @@
 
 <br>
 
+---
+
+<br>
+
+
 <br>
 
 
@@ -42,39 +47,50 @@
 
 *N'oublie pas : il y a souvent plusieurs façons d'arriver au même résultat sous Linux.*
 
-Solution 1 (Erreurs 500/404)
+**Solution 1** (Erreurs 500/404)
 
-grep -E "500|404" server.log
-Solution 2 (Hacker/Admin)
+	grep -E "500|404" server.log
 
-grep -E "hacker|admin" server.log
-Solution 3 (Pas de commentaires)
+**Solution 2** (Hacker/Admin)
 
-grep -v "^#" server.log
-^# veut dire : "qui commence par "
-Solution 4 (Juste les IPs)
+	grep -E "hacker|admin" server.log
 
-awk '{print $1}' server.log
-Solution 5 (Gros fichiers > 5000)
+**Solution 3** (Pas de commentaires)
 
-awk '$NF > 5000' server.log
-Note : Cela va aussi afficher les commentaires car awk essaie d'interpréter le texte comme un nombre, ce qui peut donner des résultats bizarres sur les lignes de texte pur.
-Version pro pour filtrer les lignes de log seulement :
-grep "GET\|POST" server.log | awk '$NF > 5000'
-Solution 6 (User + Page)
+	grep -v "^#" server.log
 
-awk '{print $3, $7}' server.log
-Solution 7 (Anonymisation Marco)
+*^# veut dire : "qui commence par "*
 
-sed 's/marco/USER_1/g' server.log
-Solution 8 (Suppression vide et commentaires avec Sed)
+**Solution 4** (Juste les IPs)
 
-sed '/^/d; /^$/d' server.log
+	awk '{print $1}' server.log
 
-Explication : /^#/d supprime les commentaires, /^$/d supprime les lignes vides. Le point-virgule sépare les deux ordres.
-Solution 9 (BOSS FINAL)
+**Solution 5** (Gros fichiers > 5000)
 
-grep -E "500|403|404" server.log | awk '{print $1}' | sort | uniq
+	awk '$NF > 5000' server.log
+
+*Note : Cela va aussi afficher les commentaires car awk essaie d'interpréter le texte comme un nombre, ce qui peut donner des résultats bizarres sur les lignes de texte pur.
+Version pro pour filtrer les lignes de log seulement :*
+
+	grep "GET\|POST" server.log | awk '$NF > 5000'
+
+**Solution 6** (User + Page)
+
+	awk '{print $3, $7}' server.log
+
+**Solution 7** (Anonymisation Marco)
+
+	sed 's/marco/USER_1/g' server.log
+
+**Solution 8** (Suppression vide et commentaires avec Sed)
+
+	sed '/^/d; /^$/d' server.log
+
+*Explication : /^#/d supprime les commentaires, /^$/d supprime les lignes vides. Le point-virgule sépare les deux ordres.*
+
+**Solution 9** (BOSS FINAL)
+
+	grep -E "500|403|404" server.log | awk '{print $1}' | sort | uniq
 
 1. On filtre les erreurs
 2. On prend juste l'IP
