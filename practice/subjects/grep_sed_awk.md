@@ -84,7 +84,7 @@ Version pro pour filtrer les lignes de log seulement :*
 
 **Solution 8** (Suppression vide et commentaires avec Sed)
 
-	sed '/^/d; /^$/d' server.log
+	sed '/^#/d; /^$/d' server.log
 
 *Explication : /^#/d supprime les commentaires, /^$/d supprime les lignes vides. Le point-virgule sépare les deux ordres.*
 
