@@ -38,22 +38,6 @@ C'est le dogme central d'UNIX. Cela signifie que le noyau Linux traite la plupar
 
 Pourquoi c'est génial ? Parce qu'on peut utiliser les MÊMES outils pour tout ! Tu veux copier tout le contenu de ton disque dur vers une image de sauvegarde ? Pas besoin d'un logiciel spécial. Tu utilises la commande de copie `cp` ou `dd` (Data Duplicator) : `dd if=/dev/sda of=/home/marco/backup.img` *(Traduction : Copie le fichier "Disque Dur" vers le fichier "backup.img")*.
 
-## 3. Les Inodes (L'ADN du fichier)
-
-Quand un fichier est créé (ex: `toto.txt`), le système sépare deux informations :
-1.  **Le Nom :** Stocké dans le répertoire.
-2.  **L'Inode (Index Node) :** Une fiche d'identité (numéro unique) contenant les métadonnées :
-    * Propriétaire, permissions, taille.
-    * **L'emplacement physique des données sur le disque.**
-
-Cela permet de créer différents types de liens :
-
-* **Hard Link (Lien Dur) :**
-    * Crée un second nom pointant vers le **même inode**.
-    * Si on supprime le fichier original, les données restent accessibles via le lien dur.
-* **Soft Link / Symbolic Link (Lien Symbolique) :**
-    * Crée un raccourci qui pointe vers le **chemin** de l'autre fichier.
-    * Si on supprime le fichier original, le lien est cassé (il pointe dans le vide).
 
 ## 3. Chemins Absolus vs Relatifs
 
@@ -126,8 +110,9 @@ La commande est `ln` (Link).
 	- **Observation 1** : Ils ont le MÊME numéro d'Inode (123456). Ce sont physiquement les mêmes données sur le disque.
 	- **Observation 2** : Le chiffre 2 (juste après les droits -rw-r--r--) indique le nombre de hard links. Il y a deux noms qui pointent vers ces données.
 
-	Supprimons l'original :Bashrm original.txt
+	Supprimons l'original :
 	```bash
+	rm original.txt
 	cat dur.txt
 	# Résultat : "Bonjour 42"
 	```
