@@ -902,3 +902,508 @@ sudo apt autoremove
 <br>
 
 </details>
+
+<details> <summary><h2>10. Développement et Compilation (Spécial 42)</h2></summary>
+
+## gcc
+
+Le compilateur C standard (GNU Compiler Collection).
+
+```bash
+gcc [options] fichier.c -o executabl
+```
+
+- **-Wall -Wextra -Werror** : Active tous les avertissements (Flags 42 standards).
+
+- **-g** : Ajoute les infos de debug (pour gdb/valgrind).
+
+<br>
+
+## make
+
+Automatiser la compilation via un Makefile.
+
+```bash
+make [regle]
+```
+- **all** : générer les fichiers objets (*.o) et créer le binaire ou la librairie
+- **clean** : supprimer les fichiers objets
+- **fclean** : supprimer les fichiers objets + le binaire / la librairie
+- **re** : Règle standard (souvent) pour "rebuild" (clean + all).
+
+<br>
+
+## gdb
+
+Le débogueur GNU. Pour analyser pourquoi un programme crash (Segfault).
+
+```bash
+gdb ./executable
+```
+
+<br>
+
+## valgrind
+
+Outil d'analyse mémoire. Indispensable pour détecter les "Memory Leaks" à 42.
+
+```bash
+valgrind [options] ./executable
+```
+
+- **--leak-check=full** : Affiche les détails complets des fuites mémoires.
+
+<br>
+
+## nm
+
+Lister les symboles (fonctions, variables) d'un fichier objet ou exécutable.
+
+```bash
+nm [fichier]
+```
+
+<br>
+
+## ar
+
+Créer, modifier ou extraire des archives (utilisé pour créer des bibliothèques statiques .a aka "libft").
+
+```bash
+ar [options] archive.a fichiers.o
+```
+
+- **-rcs** : Replace, Create, Sort index (Standard pour les libs).
+
+<br>
+
+## ldd
+
+Afficher les bibliothèques partagées nécessaires à un programme.
+
+```bash
+ldd [executable]
+```
+
+<br>
+
+<br>
+
+</details>
+
+<details> <summary><h2>11. Informations Système et Matériel</h2></summary>
+
+
+## lscpu
+
+Afficher les informations sur le processeur (CPU).
+
+```bash
+lscpu
+```
+
+<br>
+
+## lsusb
+
+Lister les périphériques USB connectés.
+
+```bash
+lsusb
+```
+
+<br>
+
+## lspci
+
+Lister les périphériques PCI (Carte graphique, carte réseau, etc.).
+
+```bash
+lspci
+```
+
+<br>
+
+## lshw
+
+Lister tout le matériel de manière détaillée (Hardware).
+
+```bash
+sudo lshw
+```
+
+- **-short** : Affiche un résumé plus lisible.
+
+<br>
+
+## dmesg
+
+
+Afficher les messages du noyau (Kernel Ring Buffer). Utile pour voir les erreurs matérielles au démarrage.
+
+```bash
+dmesg
+```
+
+- **-w** : Affiche les nouveaux messages en temps réel (comme tail -f).
+
+<br>
+
+## dmidecode
+
+Lire les tables DMI (infos BIOS, carte mère, RAM physique).
+
+```bash
+sudo dmidecode
+```
+
+<br>
+
+<br>
+
+</details>
+
+<details> <summary><h2>12. Utilitaires Shell et Environnement</h2></summary>
+
+## man
+
+Afficher le manuel d'une commande.
+
+```bash
+man [commande]
+```
+
+## which
+
+Localiser l'emplacement d'une commande exécutable.
+
+```bash
+which [commande]
+```
+
+## whereis
+
+Localiser le binaire, la source et le manuel d'une commande.
+
+```bash
+whereis [commande]
+```
+
+## locate
+
+Rechercher des fichiers dans une base de données indexée (beaucoup plus rapide que find).
+
+```bash
+locate [nom_fichier]
+```
+
+## alias
+
+
+Créer un raccourci pour une commande (temporaire, sauf si mis dans .bashrc).
+
+```bash
+alias nom='commande'
+```
+
+## unalias
+
+
+Supprimer un alias.
+
+```bash
+unalias [nom]
+```
+
+
+## export
+
+Définir une variable d'environnement (accessible aux sous-processus).
+
+```bash
+export NOM="Valeur"
+```
+
+## env
+
+Afficher toutes les variables d'environnement actuelles.
+
+```bash
+env
+```
+
+## source
+
+
+Exécuter un fichier dans le shell actuel (souvent pour recharger le .bashrc).
+
+```bash
+source .bashrc
+```
+
+## reset
+
+Réinitialiser complètement le terminal (si l'affichage est buggé).
+
+```bash
+reset
+```
+
+## history
+
+Afficher l'historique des commandes.
+
+```bash
+history
+```
+
+- **-c** : Efface l'historique de la session.
+
+## exit
+
+Quitter le shell actuel.
+
+```bash
+exit
+```
+
+</details>
+
+<details> <summary><h2>13. Date, Heure et Planification</h2></summary>
+
+<br>
+
+## date
+
+Afficher ou régler la date et l'heure système.
+
+```bash
+date
+```
+
+- **+"%Y-%m-%d"** : Formater la sortie (ex: 2023-12-25).
+
+<br>
+
+## cal
+
+Afficher un calendrier.
+
+```bash
+cal
+```
+
+<br>
+
+## uptime
+
+Afficher depuis combien de temps le système tourne et la charge moyenne (load average).
+
+```bash
+uptime
+```
+
+<br>
+
+## crontab
+
+Gérer les tâches planifiées (Cron).
+
+```bash
+crontab [options]
+```
+
+- **-e** : Éditer la table cron.
+
+- **-l** : Lister la table cron.
+
+<br>
+
+## at
+
+Programmer une commande pour une exécution unique dans le futur.
+
+```bash
+echo "commande" | at 14:00
+```
+
+<br>
+
+<br>
+
+</details>
+
+<details> <summary><h2>14. Monitoring Avancé et Logs</h2></summary>
+
+## journalctl
+
+
+Consulter les journaux de systemd (Logs système modernes).
+
+```bash
+journalctl [options]
+```
+
+- **-xe** : Affiche les erreurs récentes avec détails (souvent suggéré après un crash de service).
+
+- **-u ssh** : Affiche uniquement les logs du service SSH.
+
+- **-f** : Suit les logs en temps réel (Follow).
+
+<br>
+
+## watch
+
+Exécuter une commande périodiquement et afficher le résultat en plein écran.
+
+```bash
+watch [commande]
+```
+
+- **-n 1** : Rafraîchir toutes les 1 secondes.
+
+<br>
+
+## vmstat
+
+Afficher les statistiques de la mémoire virtuelle, des disques et du CPU.
+
+```bash
+vmstat [delai]
+```
+
+<br>
+
+## iostat
+
+Afficher les statistiques d'entrées/sorties (I/O) CPU et Disques (paquet sysstat).
+
+```bash
+iostat
+```
+
+<br>
+
+<br>
+
+</details>
+
+<details> <summary><h2>15. Utilisateurs et Sessions (Avancé)</h2></summary>
+
+## w / who
+
+Afficher qui est connecté et ce qu'ils font.
+
+```bash
+w
+
+who # (plus simple que w)
+```
+
+<br>
+
+## last
+
+Afficher l'historique des dernières connexions utilisateurs.
+
+```bash
+last
+```
+
+<br>
+
+## lastb
+
+Afficher les tentatives de connexions échouées (Bad logins).
+
+```bash
+sudo lastb
+```
+
+<br>
+
+<br>
+
+</details>
+
+<details> <summary><h2>16. Réseau Avancé et DNS</h2></summary>
+
+## dig
+
+Interroger les serveurs DNS (Domain Information Groper). Plus précis que ping.
+
+```bash
+dig domaine.com
+```
+
+- **+short** : Affiche juste l'IP.
+
+## nslookup
+
+Interroger un serveur de nom (ancien outil, mais toujours utile).
+
+```bash
+nslookup domaine.com
+```
+
+## traceroute
+
+Afficher le chemin (les routeurs) pris par un paquet pour atteindre une cible.
+
+```bash
+traceroute google.com
+```
+
+## hostnamectl
+
+Voir ou changer le nom d'hôte de la machine (systemd).
+
+```bash
+hostnamectl
+```
+
+- set-hostname [nom] : Change le nom de la machine.
+
+## nc
+
+Netcat : Le couteau suisse du réseau (Lire/Écrire sur des ports TCP/UDP).
+
+```bash
+nc [options] host port
+```
+
+- **-l -p 1234** : Écoute sur le port 1234 (mode serveur).
+
+- **-z -v** : Scanne un port pour voir s'il est ouvert (mode scanner).
+
+## tcpdump
+
+Capturer et analyser les paquets réseaux (Sniffer).
+
+```bash
+sudo tcpdump [options]
+```
+
+</details>
+
+<details> <summary><h2>17. Flux Avancés (Pipes & redirections)</h2></summary>
+
+tee
+## Lire depuis l'entrée standard et écrire à la fois dans la sortie standard et dans un fichier (forme de T).
+
+```bash
+echo "test" | tee fichier.txt
+```
+
+- **-a** : Ajoute au fichier au lieu d'écraser (Append).
+
+## xargs
+Construire et exécuter des lignes de commandes à partir de l'entrée standard.
+
+```bash
+find . -name "*.bak" | xargs rm
+```
+
+- (Exemple : Trouve tous les .bak et passe-les à rm pour les supprimer).
+
+</details>
