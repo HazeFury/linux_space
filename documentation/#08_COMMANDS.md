@@ -270,9 +270,9 @@ Langage de traitement de texte par colonnes.
 awk [options] '{action}' fichier
 ```
 
-- **-F** "," : Définit le séparateur de colonne (ici une virgule).
+- '{print $1}' : Affiche la première colonne.
 
-'{print $1}' : Affiche la première colonne.
+- **-F** "," : Définit le séparateur de colonne (ici une virgule).
 
 <br>
 
@@ -339,7 +339,8 @@ Traduire ou supprimer des caractères.
 ```bash 
 tr [options] set1 set2
 ```
-tr 'a-z' 'A-Z' : Transforme tout en majuscules.
+- tr 'a-z' 'A-Z' : Transforme tout en majuscules.
+- -d : Supprime les caractères du SET1. 
 
 <br>
 
@@ -374,68 +375,126 @@ diff fichier1 fichier2
 
 Changer les permissions d'un fichier (Change Mode).
 
+```bash 
 chmod [options] droits fichier
-+x : Rend exécutable.
+```
 
-755 : Droits standards (rwx pour proprio, rx pour les autres).
+- **+x** : Rend exécutable.
 
--R : Applique récursivement au dossier.
+- **755** : Droits standards (rwx pour proprio, rx pour les autres).
+
+- **-R** : Applique récursivement au dossier.
+
+Notation octale : 
+
+* **R = 4**
+* **W = 2**
+* **X = 1**
+
+<br>
 
 ## chown
 
 Changer le propriétaire d'un fichier (Change Owner).
 
+```bash
 chown [options] user:group fichier
--R : Récursif.
+```
+
+- **-R** : Récursif.
+
+<br>
 
 ## sudo
 
 Exécuter une commande en tant que Super-Utilisateur (Root).
 
+```bash
 sudo commande
+```
+
+<br>
+
 ## su
 
 Changer d'utilisateur (Switch User).
 
+```bash
 su [nom_user]
-- : Charge aussi les variables d'environnement de l'utilisateur.
+```
+
+- **\-** : Charge aussi les variables d'environnement de l'utilisateur.
+
+<br>
 
 ## useradd / adduser
 
 Créer un nouvel utilisateur.
 
+```bash
 sudo adduser nom_user
-adduser : Plus convivial (pose des questions).
+```
 
-useradd : Plus bas niveau (pour les scripts).
+- **adduser** : Plus convivial (pose des questions).
+
+- **useradd** : Plus bas niveau (pour les scripts).
+
+<br>
 
 ## userdel
 
 Supprimer un utilisateur.
 
+```bash
 sudo userdel [options] nom_user
--r : Supprime aussi son dossier personnel (/home).
+```
+
+- **-r** : Supprime aussi son dossier personnel (/home).
+
+<br>
 
 ## passwd
 
 Changer le mot de passe.
 
+```bash
 passwd [user]
+```
+
+<br>
+
 ## groups
 
 Voir les groupes d'un utilisateur.
 
+```bash
 groups [user]
+```
+
+<br>
+
 ## id
 
 Afficher les IDs (UID, GID) de l'utilisateur.
 
+```bash
 id
+```
+
+<br>
+
 ## whoami
 
 Afficher qui je suis actuellement.
 
+```bash
 whoami
+```
+
+<br>
+
+<br>
+
 </details>
 
 <details> <summary><h2>5. Processus et Système</h2></summary>
@@ -444,103 +503,189 @@ whoami
 
 Afficher les processus en cours (instantané).
 
+```bash
 ps [options]
-aux : Affiche TOUS les processus de TOUS les utilisateurs.
+```
+
+- aux : Affiche TOUS les processus de TOUS les utilisateurs.
+
+<br>
 
 ## top / htop
 
 Afficher les processus en temps réel (Gestionnaire de tâches).
 
+```bash
 htop
+```
+
+<br>
+
 ## kill
 
 Envoyer un signal à un processus (pour l'arrêter).
 
+```bash
 kill [options] PID
--9 : Force l'arrêt immédiat (SIGKILL).
+```
+- **-15** : (par défaut) arrêt en douceur (SIGTERM).
+
+- **-9**: Force l'arrêt immédiat (SIGKILL).
+
+- **-2**: Interronpt le processus(équivalent de faire Ctrl+C dans le terminal) (SIGINT)
+
+<br>
 
 ## pkill
 
 Tuer des processus par leur nom.
 
+```bash
 pkill nom_processus
+```
+
+<br>
+
 ## bg / fg
 
 Gérer les tâches de fond.
 
+```bash
 bg  # Met la tâche en arrière-plan (Background)
 fg  # Ramène la tâche au premier plan (Foreground)
+
+sleep 120 & #rajouter un '&' pour lancer directement la commande en arrière plan.
+```
+
+<br>
+
 ## jobs
 
 Lister les tâches lancées dans le terminal actuel.
 
+```bash
 jobs
+```
+
+<br>
+
 ## systemctl
 
 Contrôler les services (Systemd).
 
+```bash
 sudo systemctl [action] [service]
-start, stop, restart, status.
+```
 
-enable : Active au démarrage.
+- service = **start, stop, restart, status**.
+
+- **enable / disable** : Active / désactive au démarrage.
+
+<br>
 
 ## uname
 
 Afficher les informations système.
 
+```bash
 uname [options]
--a : Affiche tout (Kernel, version, architecture).
+```
+- **-a** : Affiche tout (Kernel, version, architecture).
+
+<br>
 
 ## uptime
 
 Afficher depuis combien de temps la machine tourne.
 
+```bash
 uptime
+```
+
+<br>
+
 ## history
 
 Afficher l'historique des commandes tapées.
 
+```bash
 history
-!n : Relance la commande numéro n.
+```
+
+- **!n** : Relance la commande numéro n.
+
+<br>
+
+<br>
 
 </details>
 
 <details> <summary><h2>6. Disques et Stockage</h2></summary>
 
+<br>
+
 ## df
 
 Afficher l'espace disque utilisé (Disk Free).
 
+```bash
 df [options]
--h : Format lisible (Human readable).
+```
+- **-h** : Format lisible (Human readable).
+
+<br>
+
+<br>
 
 ## du
 
 Afficher la taille d'un dossier (Disk Usage).
 
+```bash
 du [options] [chemin]
--sh : Taille totale du dossier en format lisible (Summary Human).
+```
+
+- **-sh** : Taille totale du dossier en format lisible (Summary Human).
+
+<br>
 
 ## free
 
 Afficher l'utilisation de la mémoire RAM.
 
+```bash
 free [options]
--h : Format lisible.
+```
 
--m : En mégaoctets.
+- **-h** : Format lisible.
+
+- **-m** : En mégaoctets.
+
+<br>
 
 ## lsblk
 
 Lister les périphériques de stockage (blocs).
 
+```bash
 lsblk
+```
+
+<br>
+
 ## mount / umount
 
 Monter ou démonter une partition/clé USB.
 
+```bash
 sudo mount /dev/sdX /mnt/dossier
 sudo umount /mnt/dossier
+```
+
+<br>
+
+<br>
+
 </details>
 
 <details> <summary><h2>7. Réseau</h2></summary>
@@ -549,54 +694,91 @@ sudo umount /mnt/dossier
 
 La commande moderne pour gérer le réseau.
 
+```bash
 ip [objet] [commande]
-ip a (addr) : Affiche les adresses IP.
+```
 
-ip r (route) : Affiche les tables de routage (passerelle).
+- **ip a** *(addr)* : Affiche les adresses IP.
+
+- **ip r** *(route)* : Affiche les tables de routage (passerelle).
+
+<br>
 
 ## ping
 
 Tester la connexion vers une machine.
 
+```bash
 ping [adresse]
--c 4 : Envoie seulement 4 paquets puis s'arrête.
+```
+
+- **-c 4** : Envoie seulement 4 paquets puis s'arrête.
+
+<br>
 
 ## ssh
 
 Se connecter à une machine distante sécurisée.
 
-ssh user@machine
--p : Spécifier un port (ex: -p 4242).
+```bash
+ssh user@ip
+```
+
+- **-p** : Spécifier un port (ex: -p 4242).
+
+<br>
 
 ## scp
 
 Copier des fichiers via SSH (Secure Copy).
 
+```bash
 scp [options] source destination
-scp fichier user@ip:/dossier : Envoie vers le serveur.
 
--P : Spécifier le port (Attention P majuscule ici !).
+scp fichier user@ip:/dossier : Envoie vers le serveur.
+```
+
+- **-P** : Spécifier le port (Attention P majuscule ici !).
+
+<br>
 
 ## curl
 
 Récupérer du contenu web ou tester une API.
 
+```bash
 curl [options] url
--I : Affiche seulement les en-têtes (Headers).
+```
 
--O : Télécharge le fichier.
+- **-I** : Affiche seulement les en-têtes (Headers).
+
+- **-O** : Télécharge le fichier.
+
+<br>
 
 ## wget
 
 Télécharger des fichiers depuis le web.
 
+```bash
 wget [url]
+```
+
+<br>
+
 ## netstat / ss
 
 Afficher les ports ouverts et connexions.
 
+```bash
 ss [options]
--tulpn : Affiche les ports en écoute (TCP/UDP) et les processus associés.
+```
+
+- **-tulpn** : Affiche les ports en écoute (TCP/UDP) et les processus associés.
+
+<br>
+
+<br>
 
 </details>
 
@@ -606,31 +788,50 @@ ss [options]
 
 Archiver des dossiers.
 
-tar [options] archive.tar.gz dossier
--c : Créer.
+```bash
+tar [options] archive.tar dossier
+```
 
--x : Extraire.
+- **-c** : Créer.
 
--z : Compresser avec Gzip.
+- **-x** : Extraire.
 
--v : Verbose (voir ce qui se passe).
+- **-z** : Compresser avec Gzip.
 
--f : Fichier (toujours mettre f en dernier).
+- **-v** : Verbose (voir ce qui se passe).
 
-Mémotechnique extraction : tar -xzvf
+- **-f** : Fichier (toujours mettre f en dernier).
+
+- Mémotechnique extraction : tar -xvf
+
+<br>
 
 ## gzip / gunzip
 
 Compresser / Décompresser des fichiers (.gz).
 
+```bash
 gzip fichier
+
 gunzip fichier.gz
+```
+
+<br>
+
 ## zip / unzip
 
 Gérer les fichiers .zip.
 
+```bash
 zip -r archive.zip dossier
+
 unzip archive.zip
+```
+
+<br>
+
+<br>
+
 </details>
 
 <details> <summary><h2>9. Gestion de Paquets (Debian/Ubuntu)</h2></summary>
@@ -639,27 +840,65 @@ unzip archive.zip
 
 Mettre à jour la liste des paquets disponibles.
 
+```bash
 sudo apt update
+```
+<br>
+
 ## apt upgrade
 
 Mettre à jour les logiciels installés.
 
+```bash
 sudo apt upgrade
+```
+<br>
+
 ## apt install
 
 Installer un logiciel.
 
+```bash
 sudo apt install [paquet]
+```
+<br>
+
+## apt-mark
+
+Empêcher un paquet de se mettre à jour.
+
+```bash
+# pour exclure un paquet des MAJ :
+sudo apt-mark hold <package_name>
+# Pour voir la liste des paquet exclues des MAJ :
+sudo dpkg --get-selections | grep "hold"
+# Pour inclure un paquet dans les MAJ
+sudo apt-mark unhold <package_name>
+```
+
+<br>
+
 ## apt remove
 
 Désinstaller un logiciel.
 
+```bash
 sudo apt remove [paquet]
-purge : Désinstalle ET supprime les fichiers de config.
+```
+
+- purge : Désinstalle ET supprime les fichiers de config.
+
+<br>
 
 ## apt autoremove
 
 Nettoyer les dépendances inutiles.
 
+```bash
 sudo apt autoremove
+```
+<br>
+
+<br>
+
 </details>
