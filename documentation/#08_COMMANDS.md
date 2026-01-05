@@ -302,6 +302,8 @@ wc [options] fichier
 
 - **-w** : Compte les mots.
 
+- **-m** : Compte les caractères.
+
 - **-c** : Compte les octets.
 
 <br>
@@ -1167,6 +1169,10 @@ Quitter le shell actuel.
 exit
 ```
 
+<br>
+
+<br>
+
 </details>
 
 <details> <summary><h2>13. Date, Heure et Planification</h2></summary>
@@ -1179,9 +1185,14 @@ Afficher ou régler la date et l'heure système.
 
 ```bash
 date
+
+date +"%A %d %B => %Y-%m-%d => %H:%M:%S"
+# Monday 05 January => 2026-01-05 => 17:43:12
 ```
 
 - **+"%Y-%m-%d"** : Formater la sortie (ex: 2023-12-25).
+- -d : affiche une date donnée en paramètre.
+- liste des flags [ici](https://www.malekal.com/la-commande-date-linux-utilisations-et-exemples/)
 
 <br>
 
@@ -1338,6 +1349,8 @@ dig domaine.com
 
 - **+short** : Affiche juste l'IP.
 
+<br>
+
 ## nslookup
 
 Interroger un serveur de nom (ancien outil, mais toujours utile).
@@ -1346,6 +1359,8 @@ Interroger un serveur de nom (ancien outil, mais toujours utile).
 nslookup domaine.com
 ```
 
+<br>
+
 ## traceroute
 
 Afficher le chemin (les routeurs) pris par un paquet pour atteindre une cible.
@@ -1353,6 +1368,8 @@ Afficher le chemin (les routeurs) pris par un paquet pour atteindre une cible.
 ```bash
 traceroute google.com
 ```
+
+<br>
 
 ## hostnamectl
 
@@ -1363,6 +1380,8 @@ hostnamectl
 ```
 
 - set-hostname [nom] : Change le nom de la machine.
+
+<br>
 
 ## nc
 
@@ -1376,6 +1395,8 @@ nc [options] host port
 
 - **-z -v** : Scanne un port pour voir s'il est ouvert (mode scanner).
 
+<br>
+
 ## tcpdump
 
 Capturer et analyser les paquets réseaux (Sniffer).
@@ -1384,18 +1405,25 @@ Capturer et analyser les paquets réseaux (Sniffer).
 sudo tcpdump [options]
 ```
 
+<br>
+
+<br>
+
 </details>
 
 <details> <summary><h2>17. Flux Avancés (Pipes & redirections)</h2></summary>
 
-tee
-## Lire depuis l'entrée standard et écrire à la fois dans la sortie standard et dans un fichier (forme de T).
+## tee
+
+Lire depuis l'entrée standard et écrire à la fois dans la sortie standard et dans un fichier (forme de T).
 
 ```bash
 echo "test" | tee fichier.txt
 ```
 
 - **-a** : Ajoute au fichier au lieu d'écraser (Append).
+
+<br>
 
 ## xargs
 Construire et exécuter des lignes de commandes à partir de l'entrée standard.
@@ -1405,5 +1433,9 @@ find . -name "*.bak" | xargs rm
 ```
 
 - (Exemple : Trouve tous les .bak et passe-les à rm pour les supprimer).
+
+<br>
+
+<br>
 
 </details>
