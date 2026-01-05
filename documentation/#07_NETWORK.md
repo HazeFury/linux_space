@@ -103,3 +103,120 @@ Si tu changes ton hostname, tu dois aussi le mettre à jour ici, sinon `sudo` va
 5.  Changer le **Hostname** en `tonlogin42`.
 
 Une fois ceci fait, tu as un serveur "Bunker" accessible uniquement par toi sur un port spécifique.
+
+
+<br>
+
+<br>
+
+# Focus : Curl, Wget et Dpkg
+
+Ces trois commandes sont des piliers de l'administration système sous Debian. Si `curl` et `wget` semblent similaires, ils répondent à des philosophies différentes. Quant à `dpkg`, c'est le moteur caché sous le capot d'`apt`.
+
+## 1. CURL vs WGET : Le Duel du Téléchargement
+
+### 🌊 CURL (Client URL)
+**Le Couteau Suisse des APIs et du transfert de données.**
+
+`curl` est conçu pour transférer des données via une URL. Sa particularité est qu'il affiche par défaut le contenu sur la sortie standard (`stdout`), ce qui le rend parfait pour les scripts et les pipelines.
+
+* **Point fort :** Supporte énormément de protocoles et permet d'envoyer des données (POST), vital pour tester des APIs.
+* **Philosophie :** Outil de développement et de diagnostic.
+
+**Commandes clés :**
+
+```bash
+# Voir le contenu d'une page (affiche le HTML dans le terminal)
+curl [https://www.google.com](https://www.google.com)
+
+# Télécharger un fichier (-o minuscule pour renommer, -O majuscule pour garder le nom)
+curl -o mon_fichier.html [https://www.google.com](https://www.google.com)
+curl -O [https://exemple.com/image.png](https://exemple.com/image.png)
+
+# Voir les En-têtes HTTP (Headers) - GÉNIAL pour le debug
+curl -I [https://www.42.fr](https://www.42.fr)
+
+# Suivre les redirections (-L comme Location)
+curl -L [http://google.com](http://google.com)
+# Sans -L, on risque d'obtenir une erreur 301 (Moved Permanently).
+```
+
+### 🕷️ WGET (World Wide Web Get)
+
+**Le Téléchargeur Robuste.**
+
+`wget` est conçu pour télécharger des fichiers et les sauvegarder sur le disque. Il est robuste : si la connexion coupe, il peut reprendre là où il s'est arrêté.
+
+**Point fort :** La stabilité et la récursivité (peut télécharger un site entier).
+
+**Philosophie** : Aspirateur de fichiers.
+
+Commandes clés :
+
+```bash
+# Télécharger un fichier simple
+wget [https://exemple.com/fichier.zip](https://exemple.com/fichier.zip)
+
+# Reprendre un téléchargement interrompu (-c comme Continue)
+wget -c [https://exemple.com/gros_fichier.iso](https://exemple.com/gros_fichier.iso)
+
+# Changer le nom de sortie (-O majuscule)
+wget -O nouveau_nom.zip [https://exemple.com/fichier_bizarre.zip](https://exemple.com/fichier_bizarre.zip)
+
+# Mode "Aspirateur" (Récursif - À utiliser avec prudence)
+wget -r [https://petit-site-web.com](https://petit-site-web.com)
+```
+
+<br>
+
+<div align="center">
+
+**⚔️ Comparatif**
+
+| Critère | 🌊 CURL  | 🕷️ WGET |
+| :--- | :---: | ---: |
+| Sortie par défaut | `stdout` (Écran) | Fichier sur disque |
+| Usage principal | Dev, APIs, Debug | Téléchargement pur |
+| Redirections | Manuel (`-L`) | Automatique |
+| Fiabilité connexion | Standard | Excellent (Retry, Continue) |
+
+</div>
+
+### DPKG (Debian Package)
+
+`apt` est une surcouche intelligente qui gère les dépendances (télécharge ce qu'il faut sur internet). `dpkg` est l'outil de bas niveau qui installe réellement le fichier `.deb` sur le disque. Il ne gère pas les dépendances (il ne va pas sur internet).
+
+**Quand l'utiliser ?**
+Pour installer des logiciels qui ne sont pas dans les dépôts officiels (ex: Discord, Chrome, VS Code) que tu as téléchargés manuellement en **.deb**.
+
+Commandes clés :
+
+```bash
+# Installer un fichier .deb local (-i comme Install)
+sudo dpkg -i paquet.deb
+
+# Lister TOUS les paquets installés (-l comme List)
+dpkg -l
+# Astuce : dpkg -l | grep ssh
+
+# Vérifier les infos d'un paquet (-s comme Status)
+dpkg -s ufw
+
+# Supprimer un paquet (-r comme Remove)
+sudo dpkg -r nom_du_paquet
+
+# Retrouver à quel paquet appartient un fichier
+dpkg -S /bin/ls
+# Résultat : coreutils
+```
+
+⚠️ Réparer une installation cassée
+
+Si tu installes un .deb avec dpkg et qu'il manque des dépendances, l'installation va échouer.
+
+Pour réparer :
+```bash
+sudo apt install -f
+```
+
+*(Option -f pour "Fix broken". Apt va télécharger les dépendances manquantes et finir le travail de dpkg).*
