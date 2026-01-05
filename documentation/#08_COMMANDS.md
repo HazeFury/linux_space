@@ -168,6 +168,22 @@ cat [options] fichier
 
 <br>
 
+## xdg-open / eog (Eye of Gnome)
+
+Ouvrir un fichier ou une URL avec l'application par défaut.
+
+```bash
+# ouvrir un site :
+xdg-open http://askubuntu.com/
+
+# ouvrir un fichier
+xdg-open filename.png
+
+eog filename.png
+```
+
+<br>
+
 ## less
 
 Lire un fichier page par page (permet de scroller). Quitter avec q.
@@ -753,8 +769,8 @@ curl [options] url
 ```
 
 - **-I** : Affiche seulement les en-têtes (Headers).
-
 - **-O** : Télécharge le fichier.
+- **-L** : Suis les redirections.
 
 <br>
 
@@ -763,8 +779,15 @@ curl [options] url
 Télécharger des fichiers depuis le web.
 
 ```bash
-wget [url]
+wget [options] url
 ```
+
+- **-c** : Reprendre un téléchargement interrompu (-c comme Continue).
+- **-O** : Changer le nom de sortie
+- **-r** : Récursif.
+
+[Ressource pour télécharger un site en entier](https://jasonmkelly.com/jason-m-kelly/2024/6/22/a-short-tutorial-on-using-wget#:~:text=Wget%20uses%20a%20process%20known,will%20see%20in%20this%20tutorial.) 
+
 
 <br>
 
