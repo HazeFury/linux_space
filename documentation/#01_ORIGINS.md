@@ -126,4 +126,83 @@ L'état d'esprit à adopter pour utiliser ces systèmes efficacement :
 Un **Fork** se produit quand une partie de la communauté est en désaccord avec l'évolution d'un projet libre. Ils copient le code source et partent dans une autre direction sous un nouveau nom.
 *Exemple célèbre :* MySQL (racheté par Oracle) a été "forké" pour créer **MariaDB** (resté libre). C'est pour cela que MariaDB remplace souvent MySQL.
 
----
+<br>
+
+<br>
+
+
+# L'Histoire de Debian : Le Système Universel
+
+Debian n'est pas juste une distribution Linux parmi d'autres. C'est l'une des plus anciennes, des plus respectées et des plus influentes de l'histoire de l'Open Source. C'est la "mère" de nombreuses distributions modernes (comme Ubuntu ou Kali Linux).
+
+## 1. La Genèse (1993)
+
+Tout commence le **16 août 1993**. Ian Murdock, un étudiant universitaire américain, n'est pas satisfait de la distribution dominante de l'époque (SLS). Il trouve qu'elle est mal maintenue et buggée.
+
+Il rédige alors le **"Manifeste Debian"**.
+
+Son objectif est radical pour l'époque : créer une distribution qui ne soit pas gérée par une entité commerciale ou une seule personne, mais qui soit construite ouvertement, dans l'esprit de Linux et de GNU.
+
+> **L'anecdote du nom :**
+> D'où vient le nom "Debian" ? C'est une contraction romantique.
+> **Deb**ra (la petite amie d'Ian Murdock à l'époque) + **Ian** (lui-même) = **Debian**.
+
+## 2. La Philosophie : Le Contrat Social
+
+Ce qui rend Debian unique, c'est qu'il n'y a pas d'entreprise derrière (contrairement à RedHat, Suse ou Ubuntu). C'est une organisation bénévole et démocratique.
+
+Pour garantir que le projet ne dévie jamais de ses idéaux, les développeurs ont signé le **Contrat Social Debian**. Ses points clés sont :
+
+1.  **Debian restera 100% libre :** C'est le point le plus important. C'est pour cela que, par défaut, Debian n'inclut pas les pilotes propriétaires (Wifi, Carte Graphique) s'ils ne sont pas Open Source.
+2.  **Nous rendrons à la communauté :** Toutes les améliorations faites pour Debian doivent être remontées aux auteurs originaux des logiciels.
+3.  **On ne cache pas les problèmes :** La base de bugs est publique.
+
+C'est cette rigueur (les **DFSG** - Debian Free Software Guidelines) qui fait que Debian est parfois jugée "austère" par les débutants, mais "pure" par les experts.
+
+## 3. Les Dates Clés
+
+* **1993 :** Annonce du projet par Ian Murdock.
+* **1996 :** Sortie de la version 1.1 (Nom de code "Buzz"). C'est la première version stable utilisant le noyau Linux 2.0.
+* **1999 :** Introduction d'**APT** (Advanced Package Tool). C'est une révolution. Avant cela, gérer les dépendances (installer A qui a besoin de B qui a besoin de C) était un enfer manuel. APT a automatisé tout ça et a donné à Debian un avantage technologique énorme.
+* **2015 (Debian 8 "Jessie") :** Le grand changement technique. Debian passe au système d'initialisation **Systemd** par défaut, s'alignant sur les standards modernes malgré une forte résistance d'une partie de la communauté (les puristes d'UNIX).
+
+## 4. Culture : La Connection Pixar (Toy Story)
+
+Tu as sûrement remarqué que les versions de Debian ont des noms bizarres (Bookworm, Bullseye, Buster...).
+C'est un hommage aux films **Toy Story** de Pixar.
+
+Pourquoi ? Parce que **Bruce Perens**, qui a pris la tête du projet après Ian Murdock, travaillait chez Pixar à l'époque !
+
+* **Buzz** (Debian 1.1) : Buzz l'éclair.
+* **Rex** (Debian 1.2) : Le dinosaure.
+* **Bo** (Debian 1.3) : La bergère.
+* **Potato** (Debian 2.2) : M. Patate.
+* **Woody** (Debian 3.0) : Le cow-boy.
+* **Sarge** (Debian 3.1) : Le sergent.
+* **Wheezy** (Debian 7) : Le pingouin asthmatique.
+* **Jessie** (Debian 8) : La cow-girl.
+* **Stretch** (Debian 9) : La pieuvre.
+* **Buster** (Debian 10) : Le chien d'Andy.
+* **Bullseye** (Debian 11) : Le cheval (Pile-Poil).
+* **Bookworm** (Debian 12 - Actuelle stable) : Le ver de bibliothèque.
+* **Trixie** (Debian 13 - Future stable) : Le tricératops.
+
+**Le cas spécial : "Sid"**
+Dans les films, **Sid** est le voisin méchant qui casse les jouets.
+Chez Debian, la version "Unstable" (celle où les développeurs testent les nouveaux paquets et où tout peut casser) s'appelle toujours **Sid**.
+* *Moyen mémotechnique :* "Sid casse les jouets".
+
+## 5. Les branches de la famille
+
+Debian est tellement solide qu'elle sert de base à des centaines d'autres distributions. On l'appelle souvent une "Meta-distribution".
+
+* **Ubuntu :** C'est une Debian "polie" et rendue facile d'accès par l'entreprise Canonical.
+* **Kali Linux :** C'est une Debian bourrée d'outils de sécurité pour le pentest (utilisée par les hackers éthiques).
+* **Tails :** La distribution de l'anonymat (utilisée par Edward Snowden), basée sur Debian.
+* **Raspbian (Raspberry Pi OS) :** Une Debian optimisée pour les processeurs ARM des Raspberry Pi.
+
+## 6. Pourquoi choisir Debian pour un serveur ?
+
+1.  **La Stabilité Légendaire :** "Debian Stable" est testée pendant des mois/années. Elle ne plante pas. C'est la référence pour les serveurs.
+2.  **La Sécurité :** L'équipe de sécurité Debian est très réactive.
+3.  **L'Administration Système pure :** Contrairement à Ubuntu qui pré-installe et pré-configure beaucoup de choses (Sudo, SSH...), Debian vient "nue". C'est parfait pour **apprendre** à tout monter soi-même (le but de Born2beRoot).

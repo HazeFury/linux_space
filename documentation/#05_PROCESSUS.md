@@ -81,6 +81,9 @@ Il y a une différence majeure entre **Démarrer** (maintenant) et **Activer** (
 | Activer au boot | `sudo systemctl enable <service>` |
 | Désactiver au boot | `sudo systemctl disable <service>` |
 
+=> [Focus sur le systemd et systemctl](./#09_FOCUS.md)
+
+
 ## 4. Cron & Crontab (Le Réveil Matin)
 
 Cron permet d'executer des commandes et/ou des scripts automatiquement a un interval bien défini.
@@ -114,102 +117,3 @@ Il y a 5 étoiles (champs) :
 > **💡 Astuce :** Ne cherche pas à apprendre la syntaxe par cœur tout de suite. Utilise le site [crontab.guru](https://crontab.guru/) pour vérifier tes configs.
 
 
-<br>
-
----
-
-# Focus : Systemd & Systemctl (Le Cœur du Système)
-
-Pour réussir Born2beRoot, et plus largement pour administrer un Linux moderne (Debian, Ubuntu, CentOS, RedHat), il est impératif de comprendre ce couple.
-
-## 1. Démystifions les Noms
-
-* **`systemd`** : Vient de **System Daemon** (Le Démon du Système).
-    * Le "d" à la fin des noms de programmes Linux signifie souvent "daemon" (un service qui tourne en fond).
-    * C'est le programme qui gère le système entier.
-* **`systemctl`** : Vient de **System Control**.
-    * C'est la télécommande qui permet à l'humain de donner des ordres à `systemd`.
-
-## 2. Le Rôle du PID 1 (Le "Dieu" du système)
-
-Quand tu appuies sur le bouton Power de ton ordinateur :
-1.  Le BIOS/UEFI se réveille.
-2.  Il lance le Bootloader (Grub).
-3.  Grub charge le **Noyau (Kernel)** Linux en mémoire.
-4.  Le Noyau, une fois chargé, doit lancer le "reste" (l'interface, le réseau, les disques). Pour cela, il lance **UN SEUL** programme initial : **L'Init System**.
-
-Ce programme reçoit le **PID 1** (Process ID 1).
-Si le PID 1 meurt, le système crashe instantanément (Kernel Panic).
-
-> **Avant (Le Vieux Monde) : SysVinit**
-> Historiquement, Linux utilisait `SysVinit`. C'était une suite de scripts simples (`/etc/init.d/`) qui se lançaient **les uns après les autres**.
-> * Problème : C'était lent. Si le réseau mettait 10 secondes à démarrer, tout le reste attendait.
-
-> **Aujourd'hui : Systemd**
-> Systemd a été créé pour remplacer SysVinit avec une philosophie moderne : **le Parallélisme**.
-> Il lance tout ce qu'il peut en même temps pour démarrer le PC en quelques secondes.
-
-## 3. L'Architecture de Systemd
-
-Systemd ne gère pas que les services. C'est une pieuvre tentaculaire qui gère presque tout. Il fonctionne avec des **Unités** (Units).
-
-### Les "Units" (Les briques de lego)
-Tout objet géré par Systemd est défini dans un fichier de configuration appelé "Unit file" (généralement dans `/lib/systemd/system/` ou `/etc/systemd/system/`).
-
-Il existe plusieurs types d'unités (reconnaissables à leur extension) :
-* **.service** : Le plus courant. Décrit comment lancer un programme (ex: `ssh.service`, `nginx.service`).
-* **.socket** : Pour la communication réseau.
-* **.mount** : Pour gérer le montage des disques durs.
-* **.target** : Un groupe d'unités (sert à définir des états, voir ci-dessous).
-* **.timer** : Une alternative à Cron gérée directement par Systemd.
-
-### Les Targets (Les niveaux de fonctionnement)
-Au lieu des anciens "Runlevels" (0 à 6), Systemd utilise des Targets pour définir l'état du PC.
-* `poweroff.target` : Le PC s'éteint.
-* `reboot.target` : Le PC redémarre.
-* `multi-user.target` : Mode normal (serveur), sans interface graphique (C'est ce que tu vises pour Born2beRoot).
-* `graphical.target` : Mode normal avec interface graphique (GNOME, KDE...).
-
-## 4. Systemctl : La Baguette du Chef d'Orchestre
-
-C'est l'outil que tu vas utiliser au quotidien pour interagir avec Systemd.
-
-### Commandes d'état (Observation)
-    
-    # Est-ce que le système a fini de démarrer et est-ce qu'il va bien ?
-    systemctl is-system-running
-    
-    # Lister toutes les unités qui ont échoué (très utile pour débugger)
-    systemctl --failed
-    
-    # Voir les logs d'un service précis (car systemd capture aussi les logs)
-    journalctl -u ssh
-
-### Commandes d'action (Pilotage)
-La différence cruciale entre l'action immédiate et l'action au démarrage :
-
-1.  **L'instant présent (Le Runtime) :**
-
-```bash
-sudo systemctl stop ssh     # Coupe le moteur maintenant
-sudo systemctl start ssh    # Allume le moteur maintenant
-sudo systemctl restart ssh  # Coupe et rallume
-```
-
-2.  **Le futur (Le Boot) :**
-    C'est la création de liens symboliques (symlinks) dans les dossiers de démarrage.
-
-```bash    
-sudo systemctl enable ssh   # "Au prochain démarrage, lance-toi tout seul"
-sudo systemctl disable ssh  # "Au prochain démarrage, reste éteint"
-```
-
-> **💡 Astuce :** Tu peux combiner les deux.
-> `sudo systemctl enable --now ssh` (Active le service au boot ET le démarre tout de suite).
-
-## 5. La controverse (Culture G)
-
-Tu entendras peut-être des puristes d'UNIX critiquer Systemd.
-**Pourquoi ?** La philosophie UNIX dit *"Fais une seule chose, et fais-la bien"*.
-Systemd fait **tout** : il gère les services, les logs (journald), les noms de machine (hostname), l'heure (timedate), les sessions utilisateurs (logind)...
-Certains trouvent qu'il est trop gros, trop complexe et qu'il viole la philosophie UNIX. Mais aujourd'hui, il est devenu le standard de facto sur 95% des distributions Linux majeures.
