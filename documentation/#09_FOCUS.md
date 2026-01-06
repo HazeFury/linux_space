@@ -189,6 +189,7 @@ Son job est simple : tu lui donnes du texte, il ne garde que les lignes qui corr
 * `-v` (**Invert**) : Affiche tout SAUF ce que tu cherches (très utile pour filtrer).
 * `-r` (**Recursive**) : Cherche dans tous les fichiers d'un dossier et de ses sous-dossiers.
 * `-E` (**Extended**) : Permet d'utiliser des expressions régulières complexes (Regex).
+* `-l` (**Locate**) : Ne renvoie pas de lignes mais le nom du fichier.
 
 ### Exemples concrets
 * **Chercher si l'utilisateur "marco" existe :**
