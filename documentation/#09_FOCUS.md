@@ -189,6 +189,7 @@ Son job est simple : tu lui donnes du texte, il ne garde que les lignes qui corr
 * `-v` (**Invert**) : Affiche tout SAUF ce que tu cherches (très utile pour filtrer).
 * `-r` (**Recursive**) : Cherche dans tous les fichiers d'un dossier et de ses sous-dossiers.
 * `-E` (**Extended**) : Permet d'utiliser des expressions régulières complexes (Regex).
+* `-l` (**Locate**) : Ne renvoie pas de lignes mais le nom du fichier.
 
 ### Exemples concrets
 * **Chercher si l'utilisateur "marco" existe :**
@@ -303,6 +304,181 @@ ps aux | grep "sshd" | grep -v "grep" | awk '{print $2}'
 4.  `awk '{print $2}'` : Affiche seulement la 2ème colonne (le PID).
 
 Tu viens d'isoler une donnée pure à partir d'un flux d'informations complexe. C'est ça, l'administration système.
+
+</details>
+
+<br>
+
+---
+
+<!-- ############################################################################### -->
+
+<br>
+
+<details> <summary><h2>🔎 Focus : La commande FIND</h2></summary>
+
+La commande `find` est probablement l'outil le plus puissant (et le plus complexe syntaxiquement) pour chercher des fichiers. Contrairement à `locate` qui cherche dans une base de données (qui peut être obsolète), find parcourt le disque dur en temps réel. Il ne se contente pas de trouver des fichiers par leur nom, il peut les filtrer par âge, taille, propriétaire, permissions, et même exécuter des commandes sur les résultats.
+
+**La Syntaxe de base :**
+
+	find [où_chercher] [critères] [action_optionnelle]
+
+Si tu ne précises pas "où", il cherche dans le dossier actuel (`.`).
+Si tu ne précises pas d'action, il affiche juste la liste (`-print`).
+
+## 1. Filtrer par NOM
+
+C'est l'usage le plus courant.
+
+* **Chercher par nom exact :**
+
+		find . -name "fichier.txt"
+
+* **Chercher sans se soucier de la casse (majuscule/minuscule) :**
+
+    		find /home -iname "Fichier.txt"
+	*(Trouvera fichier.txt, FICHIER.TXT, Fichier.txt...)*
+
+* **Chercher avec des jokers (wildcards) :**
+
+    	find . -name "*.log"
+    *(Tous les fichiers qui finissent par .log)*
+
+## 2. Filtrer par TYPE et TAILLE
+
+Parfois, tu ne cherches pas un nom, mais un "gros dossier" ou un "petit fichier".
+
+* **Séparer les fichiers des dossiers :**
+
+```bash
+find . -type f      # Cherche uniquement les Fichiers (Files)
+find . -type d      # Cherche uniquement les Dossiers (Directories)
+find . -type l      # Cherche uniquement les Liens symboliques
+```
+
+* **Filtrer par taille :**
+
+    L'option `-size` utilise `k` (ko), `M` (Mo), `G` (Go).
+    Les signes `+` (plus grand que) et `-` (plus petit que) sont cruciaux.
+
+```bash
+find /var -size +100M   # Fichiers de PLUS de 100 Mo
+find . -size -10k       # Fichiers de MOINS de 10 ko
+find . -size 0          # Fichiers vides (0 octets)
+```
+
+## 3. Filtrer par TEMPS (Le concept mtime)
+
+C'est indispensable pour l'administration système (ex: nettoyer les vieux logs).
+Linux stocke 3 dates pour un fichier :
+1. **mtime** (Modification Time) : Contenu modifié.
+2. **atime** (Access Time) : Fichier lu/ouvert.
+3. **ctime** (Change Time) : Métadonnées changées (droits, proprio...).
+
+* **La logique des jours (+/-) :**
+    * `-mtime -7` : Modifié il y a **moins** de 7 jours (Récemment).
+    * `-mtime +7` : Modifié il y a **plus** de 7 jours (Vieux).
+    * `-mtime 7`  : Modifié il y a exactement 7 jours.
+
+    Exemple : Trouver les logs modifiés dans les dernières 24h
+
+    	find /var/log -mtime -1
+
+## 4. Filtrer par PROPRIÉTAIRE et PERMISSIONS
+
+Utile pour les audits de sécurité.
+
+* **Chercher par utilisateur/groupe :**
+
+```bash
+find /home -user marco
+find /var -group www-data
+```
+
+* **Chercher par permissions :**
+
+    	find . -perm 777
+    *(Trouve les fichiers ouverts à tout le monde - Danger !)*
+
+    **Astuce** : Trouver les fichiers qui ont le bit SUID activé (pour les hackers)
+    
+		find / -perm -4000
+
+## 5. Les Opérateurs Logiques (AND, OR, NOT)
+
+Tu peux combiner les critères.
+
+* **NOT (Inverse) :**
+
+    	find . -not -name "*.txt"
+    
+	==> *(Tout SAUF les fichiers .txt)*
+
+* **OR (Ou) :**
+
+    	find . -name "*.jpg" -o -name "*.png"
+    ==> *(Les jpg OU les png)*
+
+* **AND (Et) :**
+
+    C'est implicite. Si tu mets deux critères, c'est un "ET".
+
+    	find . -type f -name "*.sh"
+    
+	==>*(Doit être un fichier ET s'appeler .sh)*
+
+## 6. L'Arme Ultime : -EXEC (Agir sur les résultats)
+
+C'est ici que `find` devient un langage de programmation. Tu peux exécuter une commande sur chaque fichier trouvé.
+
+**La syntaxe bizarre à retenir :**
+
+```bash
+-exec commande {} \;
+```
+
+* `{}` : Est remplacé par le nom du fichier trouvé.
+* `\;` : Signale la fin de la commande.
+
+### Exemples concrets et puissants :
+
+* **Mettre les droits 644 sur tous les fichiers HTML :**
+
+	```bash
+	find /var/www -name "*.html" -exec chmod 644 {} \;
+	```
+
+* **Supprimer tous les fichiers ".tmp" vieux de plus de 7 jours :**
+    
+	**ATTENTION** : Toujours tester sans le -delete d'abord !
+
+	```bash
+    find /tmp -name "*.tmp" -mtime +7 -delete
+	```
+
+* **Copier tous les fichiers ".conf" dans un dossier backup :**
+
+	```bash
+	find /etc -name "*.conf" -exec cp {} /home/marco/backup/ \;
+	```    
+
+* **Rechercher un texte ("password") DANS les fichiers trouvés :**
+
+	```bash
+	find . -type f -name "*.log" -exec grep "password" {} \;
+	```
+
+## ⚠️ Le Conseil de Survie
+
+Avant de lancer une commande destructive comme `-delete` ou `-exec rm`, lance **TOUJOURS** la commande avec un simple affichage d'abord pour vérifier ce que tu as sélectionné.
+
+```bash
+# 1. Vérifier
+find . -name "*.tmp"
+    
+# 2. Supprimer
+find . -name "*.tmp" -delete
+```
 
 </details>
 
@@ -717,4 +893,92 @@ Un système créé par la NSA. Il est extrêmement puissant mais **très complex
 
 <br>
 
-<!-- <details> <summary><h2>🔎 Focus : Debian vs Rocky Linux</h2></summary> -->
+<details> <summary><h2>🔎 Focus : AppArmor vs SELinux</h2></summary>
+
+Sous Linux, tu connais déjà les permissions classiques (`chmod`, `chown`). C'est ce qu'on appelle le **DAC** (Discretionary Access Control).
+* *Problème du DAC :* Si un hacker pirate ton serveur Web (qui tourne sous l'utilisateur `www-data`), il peut aller lire tout ce qui est accessible à `www-data`, voire essayer d'escalader ses privilèges.
+
+Pour contrer ça, on utilise le **MAC** (Mandatory Access Control).
+C'est une couche de sécurité supplémentaire gérée par le Noyau (Kernel). Même si l'utilisateur a le droit de lire un fichier, le MAC peut dire : "Non, ce programme n'a pas le droit de toucher à ce fichier, point barre."
+
+## 1. AppArmor (Application Armor)
+
+C'est le champion de **Debian**, Ubuntu et SUSE.
+
+### Philosophie : La sécurité par le "Chemin" (Path-based)
+AppArmor surveille les programmes par leur nom et leur emplacement.
+On crée des **profils** pour chaque application critique (ex: Nginx, MySQL).
+
+* **Comment ça marche ?**
+    Le profil dit : "Le programme `/usr/sbin/nginx` a le droit de lire `/var/www/html` et d'écrire dans `/var/log/nginx`".
+    Si Nginx essaie de lire `/etc/shadow` (les mots de passe), AppArmor le bloque, **même si** les permissions `chmod` l'auraient permis.
+
+### Les Modes
+1.  **Enforce :** Bloque les actions interdites et logue l'événement. (Sécurité maximale).
+2.  **Complain :** Ne bloque rien, mais logue ce qui *aurait dû* être bloqué. (Utile pour tester un nouveau profil sans casser la prod).
+3.  **Unconfined :** Le programme tourne sans restriction (comportement par défaut sans profil).
+
+### Commandes utiles (Debian)
+    
+    # Voir l'état (quels profils sont chargés ?)
+    sudo aa-status
+    
+    # Passer un profil en mode "plaintes" (debug)
+    sudo aa-complain /usr/sbin/nginx
+    
+    # Passer un profil en mode "actif" (prod)
+    sudo aa-enforce /usr/sbin/nginx
+
+## 2. SELinux (Security-Enhanced Linux)
+
+C'est le champion de **Red Hat**, Rocky Linux et Fedora. Créé initialement par la **NSA** (oui, l'agence américaine).
+
+### Philosophie : La sécurité par "Étiquettes" (Label-based)
+SELinux est beaucoup plus complexe. Il ne regarde pas le chemin du fichier, mais son **étiquette** (Context).
+Chaque fichier, chaque port, chaque processus a une étiquette.
+
+* **Comment ça marche ?**
+    Imagine un système de badges ultra-strict dans une base militaire.
+    * Le processus Apache a le badge `httpd_t`.
+    * Le dossier du site web a le badge `httpd_sys_content_t`.
+    * SELinux a une règle : "Les badges `httpd_t` peuvent lire les badges `httpd_sys_content_t`".
+    * Si tu déplaces un fichier depuis ton dossier `/home` (badge `user_home_t`) vers le site web, Apache ne pourra pas le lire, car les badges ne correspondent pas !
+
+### Les Modes
+1.  **Enforcing :** Bloque et logue.
+2.  **Permissive :** Logue seulement (équivalent de Complain).
+3.  **Disabled :** Désactivé complètement (nécessite un redémarrage).
+
+### Pourquoi les admins le détestent ?
+Parce que c'est difficile à débugger. Quand un truc ne marche pas sous Rocky Linux, 9 fois sur 10, c'est SELinux qui bloque en silence car un fichier a la mauvaise étiquette.
+La commande pour réparer les étiquettes est `restorecon`.
+
+## ⚔️ Le Duel : Comparaison
+
+| Critère | AppArmor | SELinux |
+| :--- | :--- | :--- |
+| **Monde** | Debian / Ubuntu | Red Hat / Rocky |
+| **Fonctionnement** | Basé sur les **chemins** de fichiers. | Basé sur les **étiquettes** (inodes). |
+| **Facilité** | Facile à apprendre et à lire. | Courbe d'apprentissage très raide. |
+| **Granularité** | Moyenne (suffisant pour 99% des cas). | Extrême (contrôle tout). |
+| **Analogie** | "Tu n'as pas le droit d'aller dans cette rue." | "Tu n'as pas le bon badge pour ouvrir ce tiroir." |
+
+## 🎓 Pour Born2beRoot
+
+Si tu as choisi **Debian**, tu utiliseras **AppArmor**.
+* Il est installé et activé par défaut.
+* Pour le projet, tu dois juste vérifier qu'il tourne au démarrage.
+* Tu n'auras probablement pas besoin de créer tes propres profils (c'est hors-sujet pour le niveau 1), mais tu dois savoir expliquer que c'est une sécurité supplémentaire qui confine les services.
+
+</details>
+
+<br>
+
+---
+
+<!-- ############################################################################### -->
+
+
+<br>
+
+<!-- <details> <summary><h2>🔎 Focus : </h2></summary> -->
