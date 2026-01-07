@@ -981,4 +981,178 @@ Si tu as choisi **Debian**, tu utiliseras **AppArmor**.
 
 <br>
 
+<details> <summary><h2>🔎 Focus : UFW vs Firewalld</h2></summary>
+
+Sous Linux, le véritable pare-feu est intégré directement dans le noyau (Kernel). Il s'appelle **Netfilter** (souvent manipulé via `iptables` ou `nftables`).
+Cependant, configurer Netfilter à la main est complexe et dangereux.
+
+Pour nous simplifier la vie, il existe des **surcouches** (Front-ends) : **UFW** et **Firewalld**.
+
+## 1. UFW (Uncomplicated Firewall)
+
+Comme son nom l'indique, son but est la simplicité. C'est l'outil par défaut de la famille **Debian/Ubuntu**.
+
+### Philosophie : "On/Off"
+UFW est conçu pour les serveurs simples ou les particuliers. Il fonctionne avec une logique binaire :
+* "J'autorise ce port."
+* "Je bloque ce port."
+C'est statique. Une fois configuré, ça ne bouge pas.
+
+### Commandes clés
+
+```bash    
+# Activer
+sudo ufw enable
+
+# Autoriser un port (TCP par défaut)
+sudo ufw allow 80/tcp
+
+# Supprimer une règle
+sudo ufw delete allow 80/tcp
+
+# Voir l'état
+sudo ufw status numbered
+```
+
+### ✅ Pour Born2beRoot
+C'est celui que tu utiliseras sur Debian. Il est parfait pour le projet car on te demande juste d'ouvrir le port 4242 et de fermer le reste.
+
+---
+
+## 2. Firewalld (Dynamic Firewall Manager)
+
+C'est l'outil par défaut de la famille **Red Hat/Rocky Linux/Fedora**. Il est beaucoup plus puissant, mais plus complexe.
+
+### Philosophie : Les "Zones"
+Firewalld introduit un concept génial pour les ordinateurs portables ou les environnements complexes : les **Zones**.
+Il adapte la sécurité selon l'endroit où tu te connectes.
+
+* **Zone "Public" (Café, Aéroport) :** On bloque tout, on ne fait confiance à personne.
+* **Zone "Home" (Maison) :** On autorise le partage d'imprimante, le streaming vers la TV...
+* **Zone "Work" (Bureau) :** On autorise le SSH des collègues.
+
+Quand tu changes de réseau Wifi, Firewalld peut changer de zone automatiquement.
+
+De plus, il est **dynamique** : il peut appliquer des changements sans couper les connexions actives (contrairement à UFW qui doit "recharger" les règles).
+
+### Commandes clés (`firewall-cmd`)
+
+```bash
+# Voir l'état
+sudo firewall-cmd --state
+
+# Voir la zone active
+sudo firewall-cmd --get-active-zones
+
+# Ouvrir un port (temporairement, jusqu'au reboot)
+sudo firewall-cmd --add-port=4242/tcp
+
+# Ouvrir un port DÉFINITIVEMENT (Le piège classique !)
+sudo firewall-cmd --permanent --add-port=4242/tcp
+sudo firewall-cmd --reload   # Obligatoire pour appliquer le permanent
+```
+
+---
+
+## ⚔️ Le Verdict
+
+| Critère | UFW | Firewalld |
+| :--- | :--- | :--- |
+| **Famille** | Debian / Ubuntu | Red Hat / Rocky / Fedora |
+| **Complexité** | Très Faible | Moyenne |
+| **Flexibilité** | Basique (IP + Port) | Avancée (Zones, Services, Rich Rules) |
+| **Mise à jour** | Recharge tout (peut couper SSH) | Dynamique (ne coupe pas) |
+| **Cible** | Débutants, Serveurs Web simples | Entreprises, Réseaux complexes |
+
+**En résumé :**
+* Si tu veux juste "Ouvrir le port 80 pour mon site web", utilise **UFW**.
+* Si tu gères un réseau d'entreprise avec des règles différentes selon les interfaces (VPN, LAN, DMZ), utilise **Firewalld**.
+
+</details>
+
+<br>
+
+---
+
+<!-- ############################################################################### -->
+
+
+<br>
+
+<details> <summary><h2>🔎 Focus : VirtualBox vs UTM</h2></summary>
+
+# Focus : VirtualBox vs UTM (Le choc des architectures)
+
+Pour réaliser le projet Born2beRoot, tu as besoin d'un **Hyperviseur** (le logiciel qui fait tourner la machine virtuelle). Historiquement, tout le monde utilisait VirtualBox. Mais l'arrivée des puces Apple Silicon (M1, M2...) a tout bouleversé.
+
+## 1. VirtualBox (Le Standard Historique)
+
+Développé par Oracle, c'est le roi de la virtualisation gratuite depuis 15 ans.
+
+* **Cible :** Les ordinateurs à processeur **Intel** ou **AMD** (Architecture x86_64). Cela inclut tous les PC Windows, les PC Linux, et les "vieux" Macs (avant 2020).
+* **Points Forts :**
+    * **Documentation infinie :** 99% des tutos sur internet utilisent VirtualBox.
+    * **Snapshots (Instantanés) :** Son système de sauvegarde est visuel, simple et très puissant. C'est génial pour revenir en arrière si tu casses ta VM.
+    * **Réseau :** La configuration du "Port Forwarding" (pour le SSH) est très intuitive.
+* **Le Gros Problème :** Il est **incapable** de faire tourner correctement une VM sur les puces Apple Silicon (M1/M2/M3). Même s'ils ont sorti une version compatible, elle est lente, buggée et inutilisable pour travailler sérieusement (à l'heure actuelle).
+
+## 2. UTM (Le Sauveur des Macs Modernes)
+
+UTM est une interface graphique moderne pour **QEMU** (un émulateur très puissant mais très complexe en ligne de commande).
+
+* **Cible :** Les Macs avec puces **Apple Silicon** (M1, M2, M3...) Architecture ARM64.
+* **Points Forts :**
+    * **Performance native :** Il utilise l'hyperviseur d'Apple. Une VM Linux tourne à la vitesse de l'éclair.
+    * **Design :** L'interface est propre et "Mac-friendly".
+    * **Emulation :** Il est capable de faire tourner un Windows x86 sur une puce ARM (c'est lent, mais ça marche).
+* **Points Faibles :**
+    * **Snapshots :** C'est son talon d'Achille. La gestion des instantanés est moins visuelle et pratique que sur VirtualBox.
+    * **Documentation :** Il y a moins de tutos spécifiques pour Born2beRoot sur UTM, il faut parfois adapter les consignes (surtout pour le réseau).
+
+## 3. Le Concept Clé : Virtualisation vs Émulation
+
+Pour comprendre pourquoi VirtualBox ne marche pas sur Mac M1, il faut comprendre ceci :
+
+1.  **Virtualisation (Rapide) :**
+    Le logiciel passe les instructions directement au processeur.
+    *Condition :* Le système invité (Debian) doit avoir la **même architecture** que l'ordinateur hôte (Ton Mac).
+    * Mac M1 (ARM) -> Debian (ARM).
+
+2.  **Émulation (Lent) :**
+    Le logiciel doit "traduire" chaque instruction d'une langue à l'autre.
+    * Mac M1 (ARM) -> Traducteur -> Debian (Intel x86).
+    * C'est ce que VirtualBox essaie de faire sur M1, et c'est pour ça que ça rame.
+
+## 4. Le Verdict pour Born2beRoot 🎓
+
+**Cas A : Tu es sur un PC Windows, Linux, ou un vieux Mac Intel.**
+👉 **Choisis VirtualBox.**
+Sans hésiter. C'est le standard, les corrections se font souvent dessus, et la gestion des snapshots te sauvera la vie.
+
+**Cas B : Tu es sur un MacBook Air/Pro M1, M2 ou M3.**
+👉 **Choisis UTM.**
+Tu n'as pas le choix. VirtualBox sera un enfer.
+*Attention :* Tu devras télécharger l'ISO de Debian en version **ARM64** (aussi appelée Aarch64), et non pas la version AMD64 classique.
+
+## Tableau Récapitulatif
+
+| Critère | VirtualBox | UTM |
+| :--- | :--- | :--- |
+| **Architecture idéale** | x86_64 (Intel/AMD) | ARM64 (Apple Silicon) |
+| **Interface** | "Old school" mais fonctionnelle | Moderne et épurée |
+| **Snapshots** | Excellents ⭐⭐⭐ | Basiques |
+| **Vitesse sur Mac M1** | Catastrophique (Inutilisable) | Excellente (Native) |
+| **Prix** | Gratuit | Gratuit (site web) / Payant (App Store) |
+
+</details>
+
+<br>
+
+---
+
+<!-- ############################################################################### -->
+
+
+<br>
+
 <!-- <details> <summary><h2>🔎 Focus : </h2></summary> -->

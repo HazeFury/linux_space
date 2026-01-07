@@ -128,3 +128,15 @@ ls -la /etc | grep ".conf" | wc -l
 5.  `wc -l` : Compte le nombre de lignes restantes.
 
 **Résultat :** Cette commande te donne le nombre exact de fichiers de configuration dans `/etc`.
+
+## Point culture 
+
+L'abréviation `TTY` vient de `T`ele`TY`pewriter (Téléscripteur). À l'époque des dinosaures de l'informatique (années 60-70), les utilisateurs n'avaient pas d'écran. Ils tapaient sur des machines à écrire électromécaniques reliées à l'ordinateur central par un câble. Ce qu'ils tapaient était envoyé au serveur, et la réponse du serveur s'imprimait sur du papier. C'était ça, un TTY physique.
+
+**Aujourd'hui sous Linux** : Le terme est resté pour désigner un terminal virtuel. C'est l'interface texte qui permet de dialoguer avec le système.
+
+**Les TTYs physiques (Virtuels)** : Sur ta VM Debian, si tu fais `Ctrl + Alt + F1` (ou F2, F3...), tu changes d'écran noir. Ce sont les différents terminaux disponibles directement connectés au noyau.
+
+**Les Pseudo-TTYs (PTS)** : Quand tu ouvres une fenêtre de terminal dans une interface graphique (comme iTerm, VS Code ou GNOME Terminal), ou quand tu te connectes en SSH, tu utilises un "Pseudo-Terminal" (pts). C'est un terminal émulé par un logiciel.
+
+La commande `tty` : Si tu tapes cette commande dans ton terminal, elle te dira exactement où tu es connecté (ex: `/dev/tty1` si tu es sur la console principale, ou `/dev/pts/0` si tu es en SSH).
