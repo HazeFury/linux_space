@@ -749,11 +749,16 @@ ssh user@ip
 ## scp
 
 Copier des fichiers via SSH (Secure Copy).
+Toujours lancer la commande depuis le PC hôte.
 
 ```bash
 scp [options] source destination
 
-scp fichier user@ip:/dossier : Envoie vers le serveur.
+scp fichier user@ip:/dossier # => Envoie vers le serveur.
+
+# Exemple :
+scp -P 4242 ./monfichier.sh user@localhost:/home/user # Pour envoyer
+scp -P 4242 user@localhost:/home/user/monfichier.sh ./mondossier # Pour recevoir
 ```
 
 - **-P** : Spécifier le port (Attention P majuscule ici !).
