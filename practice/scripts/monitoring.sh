@@ -28,7 +28,9 @@ USER_LOG=$(users | wc -w | awk '{printf("%d\n", $1-2)}')
 MAC_ADDRESS=$(ip link | grep "link/ether" | awk '{print $2}')
 IP_ADDRESS=$(hostname -I | awk '{print $1}')
 
-wall "
+SUDO_COMMANDS=$(journalctl _COMM=sudo | grep "COMMAND" | wc -l)
+
+wall -n "
 	#Architecture : $ARCHITECTURE
 	#CPU physical : $PCPU
 	#vCPU : $VCPU
@@ -40,4 +42,4 @@ wall "
 	#Connections TCP : $TCP ESTABLISHED
 	#User log : $USER_LOG
 	#Network : IP $IP_ADDRESS ($MAC_ADDRESS)
-	"
+	#Sudo : $SUDO_COMMANDS cmd"
