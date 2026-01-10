@@ -13,6 +13,8 @@ L'objectif : Ne plus voir Linux comme un OS "gratuit" mais comme un mouvement.
 
 ### 5. Pourquoi Linux ? Sa stabilité, sa sécurité et sa domination sur le marché serveur.
 
+### 6. Découvrir Debian (historique, philosophie, etc).
+
 <br>
 
 ## 🟡 Module 2 : L'Anatomie du Système
@@ -37,11 +39,6 @@ L'objectif : Savoir manipuler de la donnée textuelle.
 
 ### 3. Redirections et Pipelines : La puissance du |, >, >>, 2>, tee.
 
-### 4. La Sainte Trinité du traitement de texte :
-- **grep** (filtrer)
-- **sed** (éditer le flux)
-- **awk** (traiter les colonnes/données)
-
 <br>
 
 ## 🔴 Module 4 : Administration Utilisateurs et Permissions (Focus Sécurité)
@@ -56,6 +53,8 @@ L'objectif : Comprendre qui a le droit de faire quoi.
 
 ### 4. SUDO : "SuperUser DO". Comment ça marche, le fichier /etc/sudoers, et pourquoi on ne se log jamais en root directement.
 
+### 5. Savoir quand utiliser le sudo.
+
 <br>
 
 ## 🟣 Module 5 : Processus et Services (Le Moteur)
@@ -68,7 +67,7 @@ L'objectif : Gérer ce qui tourne sur la machine.
 
 ### 3. Le système d'Init (Systemd) : Comprendre systemctl, les services, les démons.
 
-### 4. Les Logs : Où le système parle-t-il ? (/var/log, journalctl).
+### 4. Cron & Crontab : La planification de tâches
 
 <br>
 
@@ -76,11 +75,17 @@ L'objectif : Gérer ce qui tourne sur la machine.
 
 L'objectif : Gérer l'espace de stockage de la machine. 
 
-### 1. Partitionnement classique : MBR vs GPT.
+### 1. Comment Linux voit tes Disques ?
 
-### 2. LVM (Logical Volume Manager) : Concept de PV, VG, LV. C'est l'abstraction qui permet de redimensionner des partitions à chaud.
+### 2. Partitionnement classique : MBR vs GPT.
 
-### 3. Le chiffrement : LUKS (Linux Unified Key Setup). Sécuriser ses données.
+### 3. LVM (Logical Volume Manager) : Concept de PV, VG, LV. C'est l'abstraction qui permet de redimensionner des partitions à chaud.
+
+### 4. Le chiffrement : LUKS (Linux Unified Key Setup). Sécuriser ses données.
+
+### 5. Le Format de Fichiers (File System)
+
+### 6. Montage (Mounting)
 
 <br>
 
@@ -89,9 +94,40 @@ L'objectif : Connecter la machine et la faire travailler toute seule.
 
 ### 1. Réseau de base : IP, Ports, SSH (Secure Shell) pour le contrôle à distance.
 
+### 2. SSH (Secure Shell)
+
 ### 2. Firewall : UFW (Uncomplicated Firewall). Sécuriser les entrées/sorties.
 
-### 3. Cron & Crontab : La planification de tâches (ex: script de monitoring toutes les 10 min).
+### 4. Hostname et Résolution
 
-### 4. Scripting Bash : Variables, boucles, conditions pour automatiser des tâches.
+<br>
 
+## 🟡 Module 8 : Commandes Bash
+
+## 🔴 Module 9 : Scripting Bash
+
+### 1. Le Shebang
+### 2. Les Variables
+### 3. Les Arguments
+### 4. Les Conditions (If/Else)
+### 5. Les Boucles (For/While)
+### 6. Les Fonctions
+### 7. Codes de Retour et Exit
+### 8. Opérations Arithmétiques
+### 9. Débogage
+
+## 🟢 Module 10 : Focus (Approfondissement de sujets / notions)
+
+<br>
+
+- ### 🔎 Focus : APT vs APTITUDE
+- ### 🔎 Focus : Curl, Wget et Dpkg
+- ### 🔎 Focus : Grep, Sed, Awk
+- ### 🔎 Focus : La commande FIND
+- ### 🔎 Focus : Hard Links vs Soft Links
+- ### 🔎 Focus : Systemd & Systemctl
+- ### 🔎 Focus : Debian vs Rocky Linux
+- ### 🔎 Focus : AppArmor vs SELinux
+- ### 🔎 Focus : UFW vs Firewalld
+- ### 🔎 Focus : VirtualBox vs UTM
+- ### 🔎 Focus : Les Arguments dans les Fonctions Bash

@@ -691,6 +691,16 @@ lsblk
 
 <br>
 
+## shasum
+
+Créer une signature d'un fichier/dossier en utilisant l'algorythme SHA-1 afin de vérifier l'intégrité de celui-ci.
+
+```bash
+shasum monfichier.txt
+```
+
+<br>
+
 ## mount / umount
 
 Monter ou démonter une partition/clé USB.

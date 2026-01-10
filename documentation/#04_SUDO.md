@@ -61,14 +61,16 @@ On additionne les chiffres pour obtenir le droit total :
 
 ### Gérer les fichiers
 * `chmod` (**Ch**ange **Mod**e) : Change les droits.
-    
-    chmod 644 mon_fichier.txt
-    # (Proprio écrit/lit, les autres lisent seulement)
+```bash
+chmod 644 mon_fichier.txt
+# (Proprio écrit/lit, les autres lisent seulement)
+```
 
 * `chown` (**Ch**ange **Own**er) : Change le propriétaire.
-    
-    chown marco:students mon_fichier.txt
-    # (Appartient à l'user "marco" et au groupe "students")
+```bash    
+chown marco:students mon_fichier.txt
+# (Appartient à l'user "marco" et au groupe "students")
+```
 
 ### Gérer les utilisateurs (Commandes Debian)
 * `adduser marco` : Crée un utilisateur proprement (crée son home, demande le mot de passe, etc.).
