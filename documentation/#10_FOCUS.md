@@ -1155,4 +1155,126 @@ Tu n'as pas le choix. VirtualBox sera un enfer.
 
 <br>
 
+<details> <summary><h2>🔎 Focus : Les Arguments dans les Fonctions Bash</h2></summary>
+
+
+# Focus : Les Arguments dans les Fonctions Bash
+
+En Bash, une fonction agit comme un "mini-script" à l'intérieur du script. Elle possède ses propres paramètres positionnels.
+
+## 1. La Mécanique de base ($1, $2...)
+
+Quand tu appelles une fonction avec des arguments, ils viennent écraser temporairement les arguments du script principal (seulement à l'intérieur de la fonction).
+
+* `$1` : Le premier argument passé à la **fonction**.
+* `$2` : Le deuxième argument.
+* `$#` : Le nombre d'arguments reçus par la fonction.
+* `$@` : La liste de tous les arguments.
+
+**⚠️ Attention :** `$0` ne change pas ! Il reste le nom du script principal (ex: `./mon_script.sh`), ce n'est PAS le nom de la fonction.
+
+### Exemple simple
+
+```bash
+ma_fonction() {
+	echo "Argument 1 reçu : $1"
+	echo "Argument 2 reçu : $2"
+}
+
+# Appel de la fonction
+ma_fonction "Hello" "World"
+
+# Résultat :
+# Argument 1 reçu : Hello
+# Argument 2 reçu : World
+```
+
+## 2. La portée des variables (local vs global)
+
+C'est LE piège n°1. Par défaut, **toutes** les variables en Bash sont globales.
+Si tu modifies une variable dans une fonction, elle est modifiée partout.
+
+Pour éviter de casser ton script, utilise toujours le mot-clé **`local`** pour les variables internes à la fonction.
+
+```bash
+calculer() {
+	local resultat=$(($1 + $2))
+	echo "Dedans : $resultat"
+}
+
+calculer 5 5
+echo "Dehors : $resultat"  # Affichera rien, car 'resultat' n'existe que dans la fonction.
+```
+
+## 3. Retourner une valeur (Return vs Echo)
+
+En C, tu fais `return résultat`. En Bash, ça ne marche pas comme ça.
+
+* **`return`** : Renvoie uniquement un **code d'état** (0 à 255) pour dire "Succès" ou "Erreur". On le récupère avec `$?`.
+* **`echo`** : C'est la méthode standard pour renvoyer de la donnée (du texte, un calcul). On récupère le résultat avec `$()`.
+
+### L'exemple concret
+
+```bash
+# Mauvaise méthode (Return)
+bad_fct() {
+	return 42
+}
+bad_fct
+echo "Le code retour est $?" # Affiche 42. Utile pour un statut, pas pour un calcul.
+
+# Bonne méthode (Echo)
+good_fct() {
+	local res=$(($1 * 2))
+	echo "$res"
+}
+	
+# On capture la sortie de la fonction
+VALEUR=$(good_fct 10)
+echo "Le résultat est $VALEUR" # Affiche 20
+```
+
+## 4. Exemple avancé : Vérificateur d'utilisateur
+
+Voici une fonction robuste qui prend un nom d'utilisateur en argument, vérifie s'il existe, et renvoie un code de retour propre.
+
+```bash
+check_user() {
+	# 1. On sécurise l'argument
+	if [ -z "$1" ]; then
+		echo "Erreur : Pas d'utilisateur fourni."
+		return 1 # Code d'erreur
+	fi
+
+	local user_to_check="$1"
+
+	# 2. On cherche dans /etc/passwd (silencieusement avec -q)
+	grep -q "^$user_to_check:" /etc/passwd
+
+	# 3. On regarde si grep a trouvé (code 0) ou pas (code 1)
+	if [ $? -eq 0 ]; then
+		echo "L'utilisateur $user_to_check existe."
+		return 0 # Succès
+	else
+		echo "L'utilisateur $user_to_check est introuvable."
+		return 1 # Échec
+	fi
+}
+
+	# Utilisation dans le script
+	check_user "root"
+	check_user "marco42"
+```
+
+</details>
+
+<br>
+
+---
+
+<!-- ############################################################################### -->
+
+
+<br>
+
 <!-- <details> <summary><h2>🔎 Focus : </h2></summary> -->
