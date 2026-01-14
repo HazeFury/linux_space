@@ -842,7 +842,8 @@ tar [options] archive.tar dossier
 
 - **-f** : Fichier (toujours mettre f en dernier).
 
-- Mémotechnique extraction : tar -xvf
+- Mémotechnique création : `tar -cvf`
+- Mémotechnique extraction : `tar -xvf`
 
 <br>
 
