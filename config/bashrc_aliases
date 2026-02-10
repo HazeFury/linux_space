@@ -6,9 +6,11 @@ alias cook="cc -Wall -Wextra -Werror"
 alias nb="git switch -c"
 alias sb="git switch"
 alias sbm="git switch main"
+alias sbd="git switch dev"
 alias gcmt="git commit -m"
 alias gsts="git status"
 alias gadd="git add ."
+alias py="python3"
 
 gcmtc()
 {
@@ -29,6 +31,31 @@ gpl()
 	branch=$(git branch --show-current)
 	echo "==> Going to pull on the following branch: ${branch}\n"
 	git pull origin "$branch"
+}
+
+gpsha()
+{
+	echo "\n------ STATUT GIT ------ \n\n"
+	git status
+	echo "\n---------------------\n"
+	echo "D'accord pour tout envoyer ? (y/n)"
+	read CONFIRMATION
+	if [ "$CONFIRMATION" = 'n' ]; then
+		echo "⛔ Annulation de la procédure ! ⛔"
+		return
+	fi
+	git add .
+	echo "\n---------------------\n"
+	echo "Message du commit : \n"
+	read COMMIT_MESSAGE
+	git commit \-m "$COMMIT_MESSAGE"
+	echo "\n Commit effectué ✅\n"
+	echo "\n---------------------\n"
+	BRANCH=$(git branch --show-current)
+	git push origin "$branch"
+	echo "\nPush sur la branche ($BRANCH) effectué avec succès ✅\n"
+	echo "✅ OPÉRATION TERMINÉE ✅"
+	echo "\n---------------------\n"
 }
 
 mkcd()
